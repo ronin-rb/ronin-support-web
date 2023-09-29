@@ -15,7 +15,13 @@ describe Ronin::Support::Web::HTML do
       doc = subject.parse(html)
 
       expect(doc).to be_kind_of(Nokogiri::HTML::Document)
-      expect(doc.at('body').inner_text).to eq("Hello")
+
+      # XXX: nokogiri's java extensions behave differently from libxml2
+      if RUBY_ENGINE == 'jruby'
+        expect(doc.at('body').inner_text).to eq("Hello\n")
+      else
+        expect(doc.at('body').inner_text).to eq("Hello")
+      end
     end
 
     context "when given a block" do
