@@ -19,6 +19,87 @@ provides many helper methods for parsing HTML/XML, fetching web pages, etc.
 
 * Provides helper methods for parsing HTML/XML.
 
+## Examples
+
+```ruby
+require 'ronin/support/web'
+include Ronin::Support::Web
+
+html_parse "<html>...</html>"
+# => #<Nokogiri::HTML::Document: ...>
+```
+
+### HTML
+
+Parse an HTML file:
+
+```ruby
+html_parse(open('some_file.html'))
+# => <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+# <html>
+#   <head>
+#     <script type="text/javascript" src="redirect.js"></script>
+#   </head>
+# </html>
+```
+
+Build a HTML document:
+
+```ruby
+doc = html_build do
+  html {
+    head {
+      script(:type => 'text/javascript', :src => 'redirect.js')
+    }
+  }
+end
+
+puts doc.to_html
+# <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+# <html><head><script src="redirect.js" type="text/javascript"></script></head></html>
+```
+
+### XML
+
+Parse an XML response body:
+
+```ruby
+xml_parse(response.body)
+# => <?xml version="1.0"?>
+# <users>
+#   <user>
+#     <name>admin</name>
+#     <password>0mni</password>
+#   </user>
+# </users>
+```
+
+Build a XML document:
+
+```ruby
+doc = xml_build do
+  playlist {
+    mp3 {
+      file { text('02 THE WAIT.mp3') }
+      artist { text('Evil Nine') }
+      track { text('The Wait feat David Autokratz') }
+      duration { text('1000000000') }
+    }
+  }
+end
+
+puts doc.to_xml
+# <?xml version="1.0"?>
+# <playlist>
+#   <mp3>
+#     <file>02 THE WAIT.mp3</file>
+#     <artist>Evil Nine</artist>
+#     <track>The Wait feat David Autokratz</track>
+#     <duration>1000000000</duration>
+#   </mp3>
+# </playlist>
+```
+
 ## Requirements
 
 * [Ruby] >= 3.0.0
