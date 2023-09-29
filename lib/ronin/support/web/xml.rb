@@ -63,13 +63,9 @@ module Ronin
         #   The new XML builder object.
         #
         # @example
-        #   HTML.build do
-        #     html {
-        #       body {
-        #         div(style: 'display:none;') {
-        #           object(classid: 'blabla')
-        #         }
-        #       }
+        #   XML.build do
+        #     root {
+        #       foo(id: 'bar')
         #     }
         #   end
         #
