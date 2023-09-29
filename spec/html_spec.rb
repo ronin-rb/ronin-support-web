@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'ronin/web/html'
+require 'ronin/support/web/html'
 
-describe Ronin::Web::HTML do
+describe Ronin::Support::Web::HTML do
   describe ".parse" do
     let(:html) do
       <<~HTML

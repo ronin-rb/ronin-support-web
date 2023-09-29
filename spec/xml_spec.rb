@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'ronin/web/xml'
+require 'ronin/support/web/xml'
 
-describe Ronin::Web::XML do
+describe Ronin::Support::Web::XML do
   describe ".parse" do
     let(:xml) do
       <<~XML

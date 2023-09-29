@@ -1,0 +1,31 @@
+name: ronin-support-web
+summary: A web support library for ronin-rb.
+description: |
+  ronin-support-web is a web specific support library for ronin-rb.
+  ronin-support-web provides many helper methods for parsing HTML/XML, 
+  fetching web pages, etc.
+
+license: LGPL-3.0
+authors: Postmodern
+email: postmodern.mod3@gmail.com
+homepage: https://ronin-rb.dev/
+has_yard: true
+
+metadata:
+  documentation_uri: https://ronin-rb.dev/docs/ronin-support-web
+  source_code_uri:   https://github.com/ronin-rb/ronin-support-web
+  bug_tracker_uri:   https://github.com/ronin-rb/ronin-support-web/issues
+  changelog_uri:     https://github.com/ronin-rb/ronin-support-web/blob/main/ChangeLog.md
+  rubygems_mfa_required: 'true'
+
+required_ruby_version: ">= 3.0.0"
+
+dependencies:
+  nokogiri: ~> 1.4
+  nokogiri-ext: ~> 0.1
+  mechanize: ~> 2.0
+  # Ronin dependencies:
+  ronin-support: ~> 1.0
+
+development_dependencies:
+  bundler: ~> 2.0

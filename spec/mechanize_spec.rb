@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'ronin/web/mechanize'
+require 'ronin/support/web/mechanize'
 
-describe Ronin::Web::Mechanize do
+describe Ronin::Support::Web::Mechanize do
   describe "#initialize" do
     it "must disable SSL verification by default" do
       expect(subject.verify_mode).to eq(OpenSSL::SSL::VERIFY_NONE)
