@@ -21,4 +21,24 @@
 require 'ronin/support/web/xml'
 require 'ronin/support/web/html'
 require 'ronin/support/web/mechanize'
+require 'ronin/support/web/mixin'
 require 'ronin/support/web/version'
+
+module Ronin
+  module Support
+    #
+    # Top-level namespace for `ronin-support-web`.
+    #
+    # ## Example
+    #
+    #     require 'ronin/support/web'
+    #     include Ronin::Support::Web
+    #
+    #     html_parse "<html>...</html>"
+    #     # => #<Nokogiri::HTML::Document: ...>
+    #
+    module Web
+      include Mixin
+    end
+  end
+end
