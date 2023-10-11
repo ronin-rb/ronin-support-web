@@ -13,4 +13,8 @@ describe Ronin::Support::Web::Mixin do
   it "must include `Ronin::Support::Web::XML::Mixin`" do
     expect(subject).to include(Ronin::Support::Web::XML::Mixin)
   end
+
+  it "must include `Ronin::Support::Web::Agent::Mixin`" do
+    expect(subject).to include(Ronin::Support::Web::Agent::Mixin)
+  end
 end
