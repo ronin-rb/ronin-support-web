@@ -103,7 +103,7 @@ puts doc.to_xml
 ## Requirements
 
 * [Ruby] >= 3.0.0
-* [ronin-support] ~> 1.0
+* [ronin-support] ~> 1.1
 * [nokogiri] ~> 1.4
 * [nokogiri-ext] ~> 0.1
 * [mechanize] ~> 2.0

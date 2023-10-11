@@ -12,14 +12,15 @@ end
 #                               branch: 'main'
 
 # Ronin dependencies
-# gem 'ronin-support',  '~> 1.0', github: 'ronin-rb/ronin-support',
-#                                 branch: '1.0.0'
+gem 'ronin-support', '~> 1.1', github: 'ronin-rb/ronin-support',
+                               branch: '1.1.0'
 
 group :development do
   gem 'rake'
   gem 'rubygems-tasks',   '~> 0.2'
 
   gem 'rspec',            '~> 3.0'
+  gem 'webmock',          '~> 3.0'
   gem 'simplecov',        '~> 0.20'
 
   gem 'kramdown',         '~> 2.0'
