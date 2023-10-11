@@ -23,7 +23,6 @@ required_ruby_version: ">= 3.0.0"
 dependencies:
   nokogiri: ~> 1.4
   nokogiri-ext: ~> 0.1
-  mechanize: ~> 2.0
   # Ronin dependencies:
   ronin-support: ~> 1.1
 

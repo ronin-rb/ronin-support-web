@@ -106,7 +106,6 @@ puts doc.to_xml
 * [ronin-support] ~> 1.1
 * [nokogiri] ~> 1.4
 * [nokogiri-ext] ~> 0.1
-* [mechanize] ~> 2.0
 
 ## Install
 
@@ -159,5 +158,4 @@ along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 [Ruby]: https://www.ruby-lang.org
 [nokogiri]: https://nokogiri.org/
 [nokogiri-ext]: https://github.com/postmodern/nokogiri-ext#readme
-[mechanize]: https://github.com/sparklemotion/mechanize#readme
 [ronin-support]: https://github.com/ronin-rb/ronin-support#readme

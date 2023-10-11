@@ -20,7 +20,6 @@
 
 require 'ronin/support/web/xml'
 require 'ronin/support/web/html'
-require 'ronin/support/web/mechanize'
 require 'ronin/support/web/mixin'
 require 'ronin/support/web/version'
 
