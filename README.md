@@ -26,7 +26,7 @@ require 'ronin/support/web'
 include Ronin::Support::Web
 
 html_parse "<html>...</html>"
-# => #<Nokogiri::HTML::Document: ...>
+# => #<Nokogiri::HTML::Document:...>
 ```
 
 ### HTML
@@ -100,6 +100,64 @@ puts doc.to_xml
 # </playlist>
 ```
 
+
+### Requests
+
+Gets a URL and follows any redirects:
+
+```ruby
+get 'https://example.com/'
+# => #<Net::HTTPResponse:...>
+```
+
+Gets a URL and parses the HTML response:
+
+```ruby
+get_html 'https://example.com/'
+# => #<Nokogiri::HTML::Document:...>
+```
+
+Gets a URL and parses the XML response:
+
+```ruby
+get_xml 'https://example.com/sitemap.xml'
+# => #<Nokogiri::XML::Document:...>
+```
+
+Gets a URL and parses the JSON response:
+
+```ruby
+get_json 'https://example.com/api/endpoint.json'
+# => {...}
+```
+
+POSTs to a URL and follows any redirects:
+
+```ruby
+post 'https://example.com/form', form_data: {'foo' => 'bar'}
+# => #<Net::HTTPResponse:...>
+```
+
+POSTs to a URL and parses the HTML response:
+
+```ruby
+post_html 'https://example.com/form', form_data: {'foo' => 'bar'}
+# => #<Nokogiri::HTML::Document:...>
+```
+
+POSTs to a URL and parses the XML response:
+
+```ruby
+post_xml 'https://example.com/form', form_data: {'foo' => 'bar'}
+# => #<Nokogiri::XML::Document:...>
+```
+
+POSTs to a URL and parses the JSON response:
+
+```ruby
+post_json 'https://example.com/api/endpoint.json', json: {foo: 'bar'}
+# => {...}
+```
 ## Requirements
 
 * [Ruby] >= 3.0.0
