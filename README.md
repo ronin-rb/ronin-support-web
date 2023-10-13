@@ -18,6 +18,8 @@ provides many helper methods for parsing HTML/XML, fetching web pages, etc.
 ## Features
 
 * Provides helper methods for parsing HTML/XML.
+  * Also provides additional extensions to [Nokogiri][nokogiri] using
+    [nokogiri-ext].
 
 ## Examples
 
