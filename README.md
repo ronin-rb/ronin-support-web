@@ -31,16 +31,47 @@ html_parse "<html>...</html>"
 
 ### HTML
 
-Parse an HTML file:
+Parse an HTML string:
 
 ```ruby
-html_parse(open('some_file.html'))
-# => <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-# <html>
-#   <head>
-#     <script type="text/javascript" src="redirect.js"></script>
-#   </head>
-# </html>
+doc = html_parse("<html>\n  <body>\n    <p>Hello world</p>\n  </body>\n</html>\n")
+# => 
+# #(Document:0x6ab8 {
+#   name = "document",
+#   children = [
+#     #(DTD:0x6be4 { name = "html" }),
+#     #(Element:0x6cd4 {
+#       name = "html",
+#       children = [
+#         #(Text "\n  "),
+#         #(Element:0x6e64 {
+#           name = "body",
+#           children = [
+#             #(Text "\n    "),
+#             #(Element:0x6ff4 { name = "p", children = [ #(Text "Hello world")] }),
+#             #(Text "\n  ")]
+#           }),
+#         #(Text "\n")]
+#       })]
+#   })
+```
+
+Parse a HTML file:
+
+```ruby
+doc = html_open("index.html")
+# => #<Nokogiri::HTML::Document:...>
+```
+
+Searching an HTML document using [XPath] or CSS-path:
+
+```ruby
+nodes = doc.search('//div/p')
+nodes = doc.search('div p.class')
+# => [#<Nokogiri::HTML::Element:...>, ...]
+
+node = doc.at('#id')
+# => #<Nokogiri::HTML::Element:...>
 ```
 
 Build a HTML document:
@@ -49,7 +80,7 @@ Build a HTML document:
 doc = html_build do
   html {
     head {
-      script(:type => 'text/javascript', :src => 'redirect.js')
+      script(type: 'text/javascript', src: 'redirect.js')
     }
   }
 end
@@ -64,14 +95,45 @@ puts doc.to_html
 Parse an XML response body:
 
 ```ruby
-xml_parse(response.body)
-# => <?xml version="1.0"?>
-# <users>
-#   <user>
-#     <name>admin</name>
-#     <password>0mni</password>
-#   </user>
-# </users>
+xml_parse("<?xml version=\"1.0\"?>\n<users>\n  <user>\n    <name>admin</name>\n    <password>0mni</password>\n  <user>\n</users>\n")
+# =>
+# #(Document:0xdebc {
+#   name = "document",
+#   children = [
+#     #(Element:0xdfe8 {
+#       name = "users",
+#       children = [
+#         #(Text "\n  "),
+#         #(Element:0xe178 {
+#           name = "user",
+#           children = [
+#             #(Text "\n    "),
+#             #(Element:0xe308 { name = "name", children = [ #(Text "admin")] }),
+#             #(Text "\n    "),
+#             #(Element:0xe538 { name = "password", children = [ #(Text "0mni")] }),
+#             #(Text "\n  "),
+#             #(Element:0xe768 { name = "user", children = [ #(Text "\n")] }),
+#             #(Text "\n")]
+#           })]
+#       })]
+#   })
+```
+
+Parse a XML file:
+
+```ruby
+doc = html_open("data.xml")
+# => #<Nokogiri:XML:::Document:...>
+```
+
+Searching an XML document using [XPath]:
+
+```ruby
+users = doc.search('//user')
+# => [#<Nokogiri::XML::Element:...>, ...]
+
+admin = doc.at('//user[@name="admin"]')
+# => #<Nokogiri::XML::Element:...>
 ```
 
 Build a XML document:
@@ -100,8 +162,7 @@ puts doc.to_xml
 # </playlist>
 ```
 
-
-### Requests
+### Web Requests
 
 Gets a URL and follows any redirects:
 
@@ -158,6 +219,7 @@ POSTs to a URL and parses the JSON response:
 post_json 'https://example.com/api/endpoint.json', json: {foo: 'bar'}
 # => {...}
 ```
+
 ## Requirements
 
 * [Ruby] >= 3.0.0
@@ -217,3 +279,5 @@ along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 [nokogiri]: https://nokogiri.org/
 [nokogiri-ext]: https://github.com/postmodern/nokogiri-ext#readme
 [ronin-support]: https://github.com/ronin-rb/ronin-support#readme
+
+[XPath]: https://developer.mozilla.org/en-US/docs/Web/XPath
