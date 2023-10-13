@@ -2,21 +2,16 @@ require 'spec_helper'
 require 'ronin/support/web/xml'
 
 describe Ronin::Support::Web::XML do
-  describe ".parse" do
-    let(:xml) do
-      <<~XML
-        <?xml version="1.0"?>
-        <root>
-          <stuff>Hello</stuff>
-        </root>
-      XML
-    end
+  let(:fixtures_dir) { File.join(__dir__,'fixtures') }
+  let(:xml_file)     { File.join(fixtures_dir,'test.xml') }
+  let(:xml)          { File.read(xml_file) }
 
+  describe ".parse" do
     it "must parse an XML String and return a Nokogiri::XML::Document" do
       doc = subject.parse(xml)
 
       expect(doc).to be_kind_of(Nokogiri::XML::Document)
-      expect(doc.at('stuff').inner_text).to eq("Hello")
+      expect(doc.to_s).to eq(xml)
     end
 
     context "when given a block" do
@@ -30,9 +25,9 @@ describe Ronin::Support::Web::XML do
 
   describe ".build" do
     it "must build an XML document" do
-      doc = subject.build do
-        root {
-          stuff(name: 'bla') { text("hello") }
+      doc = subject.build do |xml|
+        xml.root {
+          xml.stuff(name: 'bla') { xml.text("hello") }
         }
       end
 

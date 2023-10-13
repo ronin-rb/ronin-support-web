@@ -2,15 +2,11 @@ require 'spec_helper'
 require 'ronin/support/web/html'
 
 describe Ronin::Support::Web::HTML do
-  describe ".parse" do
-    let(:html) do
-      <<~HTML
-        <html>
-          <body>Hello</body>
-        </html>
-      HTML
-    end
+  let(:fixtures_dir) { File.join(__dir__,'fixtures') }
+  let(:html_file)    { File.join(fixtures_dir,'test.html') }
+  let(:html)         { File.read(html_file) }
 
+  describe ".parse" do
     it "must parse an HTML String and return a Nokogiri::HTML::Document" do
       doc = subject.parse(html)
 
@@ -18,9 +14,19 @@ describe Ronin::Support::Web::HTML do
 
       # XXX: nokogiri's java extensions behave differently from libxml2
       if RUBY_ENGINE == 'jruby'
-        expect(doc.at('body').inner_text).to eq("Hello\n")
+        expect(doc.to_s).to eq(
+          <<~HTML
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+            #{html}
+          HTML
+        )
       else
-        expect(doc.at('body').inner_text).to eq("Hello")
+        expect(doc.to_s).to eq(
+          <<~HTML
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+            #{html.chomp}
+          HTML
+        )
       end
     end
 
@@ -35,10 +41,10 @@ describe Ronin::Support::Web::HTML do
 
   describe ".build" do
     it "must build an HTML document" do
-      doc = subject.build do
-        html {
-          body {
-            div { text("hello") }
+      doc = subject.build do |html|
+        html.html {
+          html.body {
+            html.div { html.text("hello") }
           }
         }
       end
