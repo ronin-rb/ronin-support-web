@@ -54,6 +54,35 @@ module Ronin
           end
 
           #
+          # Opens an HTML file.
+          #
+          # @param [String] path
+          #   The path to the HTML file.
+          #
+          # @yield [doc]
+          #   If a block is given, it will be passed the newly created document
+          #   object.
+          #
+          # @yieldparam [Nokogiri::HTML::Document] doc
+          #   The new HTML document object.
+          #
+          # @return [Nokogiri::HTML::Document]
+          #   The parsed HTML file.
+          #
+          # @example
+          #   doc = HTML.open('index.html')
+          #   # => #<Nokogiri::HTML::Document:...>
+          #
+          # @see http://rubydoc.info/gems/nokogiri/Nokogiri/HTML/Document
+          # @see HTML.open
+          #
+          def html_open(path,&block)
+            HTML.open(path,&block)
+          end
+
+          alias open_html html_open
+
+          #
           # Creates a new `Nokogiri::HTML::Builder`.
           #
           # @yield []

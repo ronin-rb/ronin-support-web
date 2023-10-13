@@ -45,6 +45,39 @@ describe Ronin::Support::Web::HTML::Mixin do
     end
   end
 
+  describe "#html_open" do
+    it "must open and parse the given path, and return a Nokogiri::HTML::Document" do
+      doc = subject.html_open(html_file)
+
+      expect(doc).to be_kind_of(Nokogiri::HTML::Document)
+
+      # XXX: nokogiri's java extensions behave differently from libxml2
+      if RUBY_ENGINE == 'jruby'
+        expect(doc.to_s).to eq(
+          <<~HTML
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+            #{html}
+          HTML
+        )
+      else
+        expect(doc.to_s).to eq(
+          <<~HTML
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+            #{html.chomp}
+          HTML
+        )
+      end
+    end
+
+    context "when given a block" do
+      it "must yield the Nokogiri::HTML::Document object" do
+        expect { |b|
+          subject.html_open(html_file,&b)
+        }.to yield_with_args(Nokogiri::HTML::Document)
+      end
+    end
+  end
+
   describe "#html_build" do
     it "must build an HTML document" do
       doc = subject.html_build do |html|
