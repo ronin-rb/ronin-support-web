@@ -23,6 +23,23 @@ describe Ronin::Support::Web::XML do
     end
   end
 
+  describe ".open" do
+    it "must open and parse the given path, and return a Nokogiri::XML::Document" do
+      doc = subject.open(xml_file)
+
+      expect(doc).to be_kind_of(Nokogiri::XML::Document)
+      expect(doc.to_s).to eq(xml)
+    end
+
+    context "when given a block" do
+      it "must yield the Nokogiri::XML::Document object" do
+        expect { |b|
+          subject.open(xml_file,&b)
+        }.to yield_with_args(Nokogiri::XML::Document)
+      end
+    end
+  end
+
   describe ".build" do
     it "must build an XML document" do
       doc = subject.build do |xml|

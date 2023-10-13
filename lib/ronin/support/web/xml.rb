@@ -54,6 +54,34 @@ module Ronin
         end
 
         #
+        # Opens an XML file.
+        #
+        # @param [String] path
+        #   The path to the XML file.
+        #
+        # @yield [doc]
+        #   If a block is given, it will be passed the newly created document
+        #   object.
+        #
+        # @yieldparam [Nokogiri::XML::Document] doc
+        #   The new XML document object.
+        #
+        # @return [Nokogiri::XML::Document]
+        #   The parsed XML file.
+        #
+        # @example
+        #   doc = XML.open('data.xml')
+        #   # => #<Nokogiri::XML::Document:...>
+        #
+        # @api public
+        #
+        def self.open(path)
+          doc = Nokogiri::XML(File.open(path))
+          yield doc if block_given?
+          return doc
+        end
+
+        #
         # Creates a new `Nokogiri::XML::Builder`.
         #
         # @yield []
