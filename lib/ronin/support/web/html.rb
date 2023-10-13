@@ -73,6 +73,8 @@ module Ronin
         #   doc = HTML.open('index.html')
         #   # => #<Nokogiri::HTML::Document:...>
         #
+        # @see http://rubydoc.info/gems/nokogiri/Nokogiri/HTML/Document
+        #
         # @api public
         #
         def self.open(path)
