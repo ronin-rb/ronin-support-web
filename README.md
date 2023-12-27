@@ -228,6 +228,7 @@ post_json 'https://example.com/api/endpoint.json', json: {foo: 'bar'}
 * [ronin-support] ~> 1.1
 * [nokogiri] ~> 1.4
 * [nokogiri-ext] ~> 0.1
+* [websocket] ~> 1.2
 
 ## Install
 
@@ -281,5 +282,6 @@ along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 [nokogiri]: https://nokogiri.org/
 [nokogiri-ext]: https://github.com/postmodern/nokogiri-ext#readme
 [ronin-support]: https://github.com/ronin-rb/ronin-support#readme
+[websocket]: https://github.com/imanel/websocket-ruby#readme
 
 [XPath]: https://developer.mozilla.org/en-US/docs/Web/XPath
