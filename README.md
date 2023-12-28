@@ -20,6 +20,7 @@ provides many helper methods for parsing HTML/XML, fetching web pages, etc.
 * Provides helper methods for parsing HTML/XML.
   * Also provides additional extensions to [Nokogiri][nokogiri] using
     [nokogiri-ext].
+* Provides helper methods for working with WebSockets.
 
 ## Examples
 
@@ -220,6 +221,39 @@ POSTs to a URL and parses the JSON response:
 ```ruby
 post_json 'https://example.com/api/endpoint.json', json: {foo: 'bar'}
 # => {...}
+```
+
+### WebSockets
+
+Connecting to a WebSocket:
+
+```ruby
+websocket = websocket_connect('ws://websocket-echo.com')
+
+websocket.send_frame("foo bar")
+# => 13
+websocket.recv_frame
+# => <WebSocket::Frame::Incoming::Client:0x000227a4 @decoded=true, @code=nil, @data="foo bar", @version=13, @handler=#<WebSocket::Frame::Handler::Handler07:0x00007f7d4c9b0ed0 @frame=<WebSocket::Frame::Incoming::Client:0x000227a4 @decoded=true, @code=nil, @data="foo bar", @version=13, @handler=#<WebSocket::Frame::Handler::Handler07:0x00007f7d4c9b0ed0 ...>, @type=:text>, @application_data_buffer=nil>, @type=:text>
+websocket.send_frame("hello world")
+# => 17
+websocket.recv
+# => "hello world"
+```
+
+Starting a WebSocket server and receiving connections:
+
+```ruby
+server = websocket_server('ws://localhost:1337/')
+client = server.accept
+client.send("hello")
+client.recv
+# => "good, how are you"
+```
+```ruby
+client = websocket_client('ws://localhost:1337/')
+client.recv
+# => "hello"
+client.send("good, how are you")
 ```
 
 ## Requirements
