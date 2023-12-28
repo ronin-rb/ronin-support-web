@@ -21,6 +21,7 @@
 require 'ronin/support/web/html/mixin'
 require 'ronin/support/web/xml/mixin'
 require 'ronin/support/web/agent/mixin'
+require 'ronin/support/web/websocket/mixin'
 
 module Ronin
   module Support
@@ -29,6 +30,7 @@ module Ronin
         include HTML::Mixin
         include XML::Mixin
         include Agent::Mixin
+        include WebSocket::Mixin
       end
     end
   end
