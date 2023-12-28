@@ -18,20 +18,6 @@
 # along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/support/web/html/mixin'
-require 'ronin/support/web/xml/mixin'
-require 'ronin/support/web/agent/mixin'
+require 'ronin/support/web/websocket/client'
+require 'ronin/support/web/websocket/server'
 require 'ronin/support/web/websocket/mixin'
-
-module Ronin
-  module Support
-    module Web
-      module Mixin
-        include HTML::Mixin
-        include XML::Mixin
-        include Agent::Mixin
-        include WebSocket::Mixin
-      end
-    end
-  end
-end
