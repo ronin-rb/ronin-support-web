@@ -262,7 +262,7 @@ gem.add_dependency 'ronin-support-web', '~> 0.1'
 
 ronin-support-web - A web support library for ronin-rb.
 
-Copyright (c) 2023 Hal Brodigan (postmodern.mod3@gmail.com)
+Copyright (c) 2023-2024 Hal Brodigan (postmodern.mod3@gmail.com)
 
 ronin-support-web is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published
