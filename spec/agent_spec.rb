@@ -715,13 +715,27 @@ describe Ronin::Support::Web::Agent do
         )
 
         doc = subject.get_html(uri)
+
         expect(doc).to be_kind_of(Nokogiri::HTML::Document)
-        expect(doc.to_s).to eq(
-          <<~HTML
-            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-            #{html.chomp}
-          HTML
-        )
+
+        # XXX: nokogiri's java extensions behave differently from libxml2
+        if RUBY_ENGINE == 'jruby'
+          expect(doc.to_s).to eq(
+            <<~HTML.chomp
+              <html><head></head><body>
+                  <p>hello world</p>
+                
+              </body></html>
+            HTML
+          )
+        else
+          expect(doc.to_s).to eq(
+            <<~HTML
+              <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+              #{html.chomp}
+            HTML
+          )
+        end
       end
     end
 
@@ -768,8 +782,15 @@ describe Ronin::Support::Web::Agent do
         )
 
         doc = subject.get_xml(uri)
+
         expect(doc).to be_kind_of(Nokogiri::XML::Document)
-        expect(doc.to_s).to eq(xml)
+
+        # XXX: nokogiri's java extensions behave differently from libxml2
+        if RUBY_ENGINE == 'jruby'
+          expect(doc.to_s).to eq(xml.chomp)
+        else
+          expect(doc.to_s).to eq(xml)
+        end
       end
     end
 
@@ -1071,13 +1092,27 @@ describe Ronin::Support::Web::Agent do
         )
 
         doc = subject.post_html(uri)
+
         expect(doc).to be_kind_of(Nokogiri::HTML::Document)
-        expect(doc.to_s).to eq(
-          <<~HTML
-            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-            #{html.chomp}
-          HTML
-        )
+
+        # XXX: nokogiri's java extensions behave differently from libxml2
+        if RUBY_ENGINE == 'jruby'
+          expect(doc.to_s).to eq(
+            <<~HTML.chomp
+              <html><head></head><body>
+                  <p>hello world</p>
+                
+              </body></html>
+            HTML
+          )
+        else
+          expect(doc.to_s).to eq(
+            <<~HTML
+              <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+              #{html.chomp}
+            HTML
+          )
+        end
       end
     end
 
@@ -1124,8 +1159,15 @@ describe Ronin::Support::Web::Agent do
         )
 
         doc = subject.post_xml(uri)
+
         expect(doc).to be_kind_of(Nokogiri::XML::Document)
-        expect(doc.to_s).to eq(xml)
+
+        # XXX: nokogiri's java extensions behave differently from libxml2
+        if RUBY_ENGINE == 'jruby'
+          expect(doc.to_s).to eq(xml.chomp)
+        else
+          expect(doc.to_s).to eq(xml)
+        end
       end
     end
 

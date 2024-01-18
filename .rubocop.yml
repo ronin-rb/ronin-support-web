@@ -7,5 +7,13 @@ inherit_gem:
   rubocop-ronin: rubocop.yml
 
 #
-# ronin-FIXME specific exceptions
+# ronin-support-web specific exceptions
 #
+
+# Need explicit whitespace for the JRuby's specific HTML heredocs.
+Layout/TrailingWhitespace:
+  Exclude:
+    - spec/agent/mixin_spec.rb
+    - spec/agent_spec.rb
+    - spec/html/mixin_spec.rb
+    - spec/html_spec.rb

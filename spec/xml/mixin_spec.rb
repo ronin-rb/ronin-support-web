@@ -17,7 +17,13 @@ describe Ronin::Support::Web::XML::Mixin do
       doc = subject.xml_parse(xml)
 
       expect(doc).to be_kind_of(Nokogiri::XML::Document)
-      expect(doc.to_s).to eq(xml)
+
+      # XXX: nokogiri's java extensions behave differently from libxml2
+      if RUBY_ENGINE == 'jruby'
+        expect(doc.to_s).to eq(xml.chomp)
+      else
+        expect(doc.to_s).to eq(xml)
+      end
     end
 
     context "when given a block" do
@@ -34,7 +40,13 @@ describe Ronin::Support::Web::XML::Mixin do
       doc = subject.xml_open(xml_file)
 
       expect(doc).to be_kind_of(Nokogiri::XML::Document)
-      expect(doc.to_s).to eq(xml)
+
+      # XXX: nokogiri's java extensions behave differently from libxml2
+      if RUBY_ENGINE == 'jruby'
+        expect(doc.to_s).to eq(xml.chomp)
+      else
+        expect(doc.to_s).to eq(xml)
+      end
     end
 
     context "when given a block" do

@@ -21,9 +21,11 @@ describe Ronin::Support::Web::HTML::Mixin do
       # XXX: nokogiri's java extensions behave differently from libxml2
       if RUBY_ENGINE == 'jruby'
         expect(doc.to_s).to eq(
-          <<~HTML
-            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-            #{html}
+          <<~HTML.chomp
+            <html><head></head><body>
+                <p id="foo">Foo</p>
+              
+            </body></html>
           HTML
         )
       else
@@ -54,9 +56,11 @@ describe Ronin::Support::Web::HTML::Mixin do
       # XXX: nokogiri's java extensions behave differently from libxml2
       if RUBY_ENGINE == 'jruby'
         expect(doc.to_s).to eq(
-          <<~HTML
-            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-            #{html}
+          <<~HTML.chomp
+            <html><head></head><body>
+                <p id="foo">Foo</p>
+              
+            </body></html>
           HTML
         )
       else
