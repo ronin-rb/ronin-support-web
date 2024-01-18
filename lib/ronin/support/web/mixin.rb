@@ -26,6 +26,9 @@ require 'ronin/support/web/websocket/mixin'
 module Ronin
   module Support
     module Web
+      #
+      # Web related helper methods.
+      #
       module Mixin
         include HTML::Mixin
         include XML::Mixin
