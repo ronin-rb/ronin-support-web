@@ -95,7 +95,7 @@ module Ronin
           # @param [Hash{Symbol => Object}] kwargs
           #   Additional keyword arguments for {#send_frame}.
           #
-          # @param [:text, :binary, :ping, :pong, :close] :type (:text)
+          # @option kwargs [:text, :binary, :ping, :pong, :close] :type (:text)
           #   The data frame type.
           #
           # @api public
