@@ -12,8 +12,8 @@ end
 #                               branch: 'main'
 
 # Ronin dependencies
-gem 'ronin-support', '~> 1.1', github: 'ronin-rb/ronin-support',
-                               branch: '1.1.0'
+# gem 'ronin-support', '~> 1.1', github: 'ronin-rb/ronin-support',
+#                                branch: 'main'
 
 group :development do
   gem 'rake'
