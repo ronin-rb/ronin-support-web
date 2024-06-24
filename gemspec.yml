@@ -3,7 +3,7 @@ summary: A web support library for ronin-rb.
 description: |
   ronin-support-web is a web specific support library for ronin-rb.
   ronin-support-web provides many helper methods for parsing HTML/XML, 
-  fetching web pages, etc.
+  fetching web pages, and WebSockets.
 
 license: LGPL-3.0
 authors: Postmodern
