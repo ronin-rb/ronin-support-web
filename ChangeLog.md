@@ -1,3 +1,7 @@
+### 0.1.0.1 / 2024-07-22
+
+* Require [ronin-support] ~> 1.1.
+
 ### 0.1.0 / 2024-07-22
 
 * Initial release:
@@ -8,3 +12,4 @@
 
 [nokogiri]: https://nokogiri.org/
 [nokogiri-ext]: https://github.com/postmodern/nokogiri-ext#readme
+[ronin-support]: https://github.com/ronin-rb/ronin-support#readme
