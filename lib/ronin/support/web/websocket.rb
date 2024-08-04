@@ -18,9 +18,9 @@
 # along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/support/web/websocket/client'
-require 'ronin/support/web/websocket/server'
-require 'ronin/support/web/websocket/mixin'
+require_relative 'websocket/client'
+require_relative 'websocket/server'
+require_relative 'websocket/mixin'
 
 require 'ronin/support/network/tcp'
 require 'ronin/support/network/ssl'

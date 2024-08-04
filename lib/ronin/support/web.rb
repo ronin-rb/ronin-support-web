@@ -18,10 +18,10 @@
 # along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/support/web/xml'
-require 'ronin/support/web/html'
-require 'ronin/support/web/mixin'
-require 'ronin/support/web/version'
+require_relative 'web/xml'
+require_relative 'web/html'
+require_relative 'web/mixin'
+require_relative 'web/version'
 
 module Ronin
   module Support

@@ -18,7 +18,7 @@
 # along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/support/web/websocket/url_methods'
+require_relative 'url_methods'
 
 module Ronin
   module Support

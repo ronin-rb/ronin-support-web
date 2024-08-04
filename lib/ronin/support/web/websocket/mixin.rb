@@ -18,7 +18,7 @@
 # along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/support/web/websocket'
+require_relative '../websocket'
 
 require 'uri/ws'
 require 'uri/wss'

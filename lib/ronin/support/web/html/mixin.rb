@@ -18,7 +18,7 @@
 # along with ronin-support-web.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-require 'ronin/support/web/html'
+require_relative '../html'
 
 module Ronin
   module Support
