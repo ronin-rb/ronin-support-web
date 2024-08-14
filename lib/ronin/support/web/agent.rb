@@ -83,6 +83,12 @@ module Ronin
         #
         # Initializes the Web agent.
         #
+        # @param [Boolean] follow_redirects
+        #   Specifies whether HTTP redirects will automatically be followed.
+        #
+        # @param [Integer] max_redirects
+        #   The maximum number of redirects to follow. Defaults to 20.
+        #
         # @param [String, URI::HTTP, Addressable::URI, nil] proxy
         #   The optional proxy to send requests through.
         #
@@ -1036,6 +1042,12 @@ module Ronin
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP GET request for.
         #
+        # @param [Boolean] follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @param [Integer] max_redirects
+        #   Overrides the maximum number of redirects to follow.
+        #
         # @!macro request_kwargs
         #
         # @yield [response]
@@ -1086,6 +1098,12 @@ module Ronin
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP GET request for.
         #
+        # @option kwargs [Boolean] :follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @option kwargs [Integer] :max_redirects
+        #   Overrides the maximum number of redirects to follow.
+        #
         # @!macro request_kwargs
         #
         # @return [Nokogiri::HTML::Document]
@@ -1118,6 +1136,12 @@ module Ronin
         #
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP GET request for.
+        #
+        # @option kwargs [Boolean] :follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @option kwargs [Integer] :max_redirects
+        #   Overrides the maximum number of redirects to follow.
         #
         # @!macro request_kwargs
         #
@@ -1152,6 +1176,12 @@ module Ronin
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP GET request for.
         #
+        # @option kwargs [Boolean] :follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @option kwargs [Integer] :max_redirects
+        #   Overrides the maximum number of redirects to follow.
+        #
         # @!macro request_kwargs
         #
         # @return [Hash{String => Object}, Array]
@@ -1185,6 +1215,12 @@ module Ronin
         #
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP GET request for.
+        #
+        # @param [Boolean] follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @param [Integer] max_redirects
+        #   Overrides the maximum number of redirects to follow.
         #
         # @!macro request_kwargs
         #
@@ -1234,6 +1270,12 @@ module Ronin
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP POST request for.
         #
+        # @option kwargs [Boolean] :follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @option kwargs [Integer] :max_redirects
+        #   Overrides the maximum number of redirects to follow.
+        #
         # @!macro request_kwargs
         #
         # @return [Nokogiri::HTML::Document]
@@ -1270,6 +1312,12 @@ module Ronin
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP POST request for.
         #
+        # @option kwargs [Boolean] :follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @option kwargs [Integer] :max_redirects
+        #   Overrides the maximum number of redirects to follow.
+        #
         # @!macro request_kwargs
         #
         # @return [Nokogiri::XML::Document]
@@ -1305,6 +1353,12 @@ module Ronin
         #
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP POST request for.
+        #
+        # @option kwargs [Boolean] :follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @option kwargs [Integer] :max_redirects
+        #   Overrides the maximum number of redirects to follow.
         #
         # @!macro request_kwargs
         #
