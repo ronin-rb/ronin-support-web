@@ -1102,6 +1102,71 @@ module Ronin
         end
 
         #
+        # Performs a HTTP `HEAD` request for the URL and returns the response.
+        #
+        # @param [URI::HTTP, Addressable::URI, String] url
+        #   The URL to create the HTTP GET request for.
+        #
+        # @param [Boolean] follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @param [Integer] max_redirects
+        #   Overrides the maximum number of redirects to follow.
+        #
+        # @!macro request_kwargs
+        #
+        # @yield [response]
+        #   If a block is given it will be passed the received HTTP response.
+        #
+        # @yieldparam [Net::HTTPResponse] response
+        #   The received HTTP response object.
+        #
+        # @return [Net::HTTPResponse]
+        #   The HTTP response object.
+        #
+        # @raise [TooManyRedirects]
+        #   Maximum number of redirects reached.
+        #
+        # @note This method will follow redirects by default.
+        #
+        # @note
+        #   Unlike {#request} and {#get}, this method will follow redirects
+        #   by sending additional `HEAD` requests for the `Location` header
+        #   URLs, instead of `GET` requests, in order to save bandwidth.
+        #
+        # @example
+        #   response = agent.head('https://example.com/')
+        #   # => #<Net::HTTPResponse:...>
+        #
+        # @see #request
+        #
+        # @since 0.2.0
+        #
+        def head(url, follow_redirects: @follow_redirects,
+                      max_redirects:    @max_redirects,
+                      **kwargs)
+          response = http_head(url,**kwargs)
+
+          if follow_redirects && response.kind_of?(Net::HTTPRedirection)
+            redirect_count = 0
+
+            while response.kind_of?(Net::HTTPRedirection)
+              if redirect_count >= max_redirects
+                raise(TooManyRedirects,"maximum number of redirects reached: #{url.inspect}")
+              end
+
+              location = response['Location']
+              response = http_head(location,**kwargs)
+
+              redirect_count += 1
+            end
+          end
+
+          yield response if block_given?
+          return response
+        end
+
+        #
         # Gets a URL and returns the response.
         #
         # @param [URI::HTTP, Addressable::URI, String] url
