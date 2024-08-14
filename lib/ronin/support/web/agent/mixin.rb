@@ -102,6 +102,45 @@ module Ronin
           #
 
           #
+          # Performs an HTTP request for the URL and returns the response.
+          #
+          # @param [:copy, :delete, :get, :head, :lock, :mkcol, :move,
+          #         :options, :patch, :post, :propfind, :proppatch, :put,
+          #         :trace, :unlock] method
+          #   The HTTP method to use for the request.
+          #
+          # @param [URI::HTTP, Addressable::URI, String] url
+          #   The URL to create the HTTP request for.
+          #
+          # @!macro request_kwargs
+          #
+          # @yield [response]
+          #   If a block is given it will be passed the received HTTP response.
+          #
+          # @yieldparam [Net::HTTPResponse] response
+          #   The received HTTP response object.
+          #
+          # @return [Net::HTTPResponse]
+          #   The HTTP response object.
+          #
+          # @raise [TooManyRedirects]
+          #   Maximum number of redirects reached.
+          #
+          # @note This method will follow redirects by default.
+          #
+          # @example
+          #   response = web_request(:post,'https://example.com/')
+          #   # => #<Net::HTTPResponse:...>
+          #
+          # @since 0.2.0
+          #
+          def web_request(method,url,**kwargs,&block)
+            web_agent.request(method,url,**kwargs,&block)
+          end
+
+          alias request web_request
+
+          #
           # Gets a URL and returns the response.
           #
           # @param [URI::HTTP, Addressable::URI, String] url
