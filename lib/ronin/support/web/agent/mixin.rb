@@ -141,6 +141,45 @@ module Ronin
           alias request web_request
 
           #
+          # Performs a HTTP `HEAD` request for the URL and returns the response.
+          #
+          # @param [URI::HTTP, Addressable::URI, String] url
+          #   The URL to create the HTTP GET request for.
+          #
+          # @!macro request_kwargs
+          #
+          # @yield [response]
+          #   If a block is given it will be passed the received HTTP response.
+          #
+          # @yieldparam [Net::HTTPResponse] response
+          #   The received HTTP response object.
+          #
+          # @return [Net::HTTPResponse]
+          #   The HTTP response object.
+          #
+          # @raise [TooManyRedirects]
+          #   Maximum number of redirects reached.
+          #
+          # @note This method will follow redirects by default.
+          #
+          # @note
+          #   Unlike {#request} and {#get}, this method will follow redirects
+          #   by sending additional `HEAD` requests for the `Location` header
+          #   URLs, instead of `GET` requests, in order to save bandwidth.
+          #
+          # @example
+          #   response = agent.head('https://example.com/')
+          #   # => #<Net::HTTPResponse:...>
+          #
+          # @since 0.2.0
+          #
+          def web_head(url,**kwargs,&block)
+            web_agent.head(url,**kwargs,&block)
+          end
+
+          alias head web_head
+
+          #
           # Gets a URL and returns the response.
           #
           # @param [URI::HTTP, Addressable::URI, String] url

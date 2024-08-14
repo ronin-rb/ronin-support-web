@@ -681,6 +681,218 @@ describe Ronin::Support::Web::Agent do
     end
   end
 
+  describe "#head" do
+    it "must send a HTTP HEAD request for the given URI and return an Net::HTTPResponse object" do
+      stub_request(:head,uri)
+
+      expect(subject.head(uri)).to be_kind_of(Net::HTTPResponse)
+
+      expect(WebMock).to have_requested(:head,uri)
+    end
+
+    context "and when the response is an HTTP redirect" do
+      let(:redirect_url) { 'https://example.com/path2' }
+
+      it "must send a HTTP HEAD request for the 'Location' URL in the redirect and return that response" do
+        stub_request(:head,uri).to_return(
+          status: 301,
+          headers: {
+            'Location' => redirect_url
+          }
+        )
+        stub_request(:head,redirect_url).to_return(body: 'final response')
+
+        response = subject.head(uri)
+        expect(response).to be_kind_of(Net::HTTPResponse)
+        expect(response.body).to eq('final response')
+
+        expect(WebMock).to have_requested(:head,uri)
+        expect(WebMock).to have_requested(:head,redirect_url)
+      end
+
+      context "but requesting the HTTP redirect URL returns yet to another HTTP redirect" do
+        let(:redirect_url1) { 'https://example.com/path2' }
+        let(:redirect_url2) { 'https://example.com/path3' }
+
+        it "must follow the next 'Location' URL of each redirect until a non-HTTP redirect respnse is returned" do
+          stub_request(:head,uri).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url1
+            }
+          )
+          stub_request(:head,redirect_url1).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url2
+            }
+          )
+          stub_request(:head,redirect_url2).to_return(body: 'final response')
+
+          response = subject.head(uri)
+          expect(response).to be_kind_of(Net::HTTPResponse)
+          expect(response.body).to eq('final response')
+
+          expect(WebMock).to have_requested(:head,uri)
+          expect(WebMock).to have_requested(:head,redirect_url1)
+          expect(WebMock).to have_requested(:head,redirect_url2)
+        end
+      end
+
+      context "but the number of HTTP redirects equals the max_redirects: keyword argument" do
+        let(:redirect_url1) { 'https://example.com/path2' }
+        let(:redirect_url2) { 'https://example.com/path3' }
+
+        it "must return the first non-HTTP redirect response" do
+          stub_request(:head,uri).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url1
+            }
+          )
+          stub_request(:head,redirect_url1).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url2
+            }
+          )
+          stub_request(:head,redirect_url2).to_return(body: 'final response')
+
+          response = subject.head(uri, max_redirects: 2)
+          expect(response).to be_kind_of(Net::HTTPResponse)
+          expect(response.body).to eq('final response')
+
+          expect(WebMock).to have_requested(:head,uri)
+          expect(WebMock).to have_requested(:head,redirect_url1)
+          expect(WebMock).to have_requested(:head,redirect_url2)
+        end
+      end
+
+      context "but the number of HTTP redirects equals #max_redirects" do
+        let(:max_redirects) { 2 }
+
+        subject { described_class.new(max_redirects: max_redirects) }
+
+        let(:redirect_url1) { 'https://example.com/path2' }
+        let(:redirect_url2) { 'https://example.com/path3' }
+
+        it "must return the first non-HTTP redirect response" do
+          stub_request(:head,uri).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url1
+            }
+          )
+          stub_request(:head,redirect_url1).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url2
+            }
+          )
+          stub_request(:head,redirect_url2).to_return(body: 'final response')
+
+          response = subject.head(uri, max_redirects: 2)
+          expect(response).to be_kind_of(Net::HTTPResponse)
+          expect(response.body).to eq('final response')
+
+          expect(WebMock).to have_requested(:head,uri)
+          expect(WebMock).to have_requested(:head,redirect_url1)
+          expect(WebMock).to have_requested(:head,redirect_url2)
+        end
+      end
+
+      context "but the number of HTTP redirects exceeds the max_redirects: keyword argument" do
+        let(:redirect_url1) { 'https://example.com/path2' }
+        let(:redirect_url2) { 'https://example.com/path3' }
+
+        it "must raise a TooMnayRedirects exception" do
+          stub_request(:head,uri).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url1
+            }
+          )
+          stub_request(:head,redirect_url1).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url2
+            }
+          )
+
+          expect {
+            subject.head(uri, max_redirects: 1)
+          }.to raise_error(described_class::TooManyRedirects,"maximum number of redirects reached: #{uri.inspect}")
+
+          expect(WebMock).to have_requested(:head,uri)
+          expect(WebMock).to have_requested(:head,redirect_url1)
+        end
+      end
+
+      context "but the number of HTTP redirects exceeds #max_redirects" do
+        let(:max_redirects) { 1 }
+
+        subject { described_class.new(max_redirects: max_redirects) }
+
+        let(:redirect_url1) { 'https://example.com/path2' }
+        let(:redirect_url2) { 'https://example.com/path3' }
+
+        it "must raise a TooMnayRedirects exception" do
+          stub_request(:head,uri).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url1
+            }
+          )
+          stub_request(:head,redirect_url1).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url2
+            }
+          )
+
+          expect {
+            subject.head(uri)
+          }.to raise_error(described_class::TooManyRedirects,"maximum number of redirects reached: #{uri.inspect}")
+
+          expect(WebMock).to have_requested(:head,uri)
+          expect(WebMock).to have_requested(:head,redirect_url1)
+        end
+      end
+
+      context "but when the follow_redirects: keyword argument is false" do
+        it "must return the HTTP response for the URI" do
+          stub_request(:head,uri).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url
+            }
+          )
+
+          response = subject.head(uri, follow_redirects: false)
+          expect(response).to be_kind_of(Net::HTTPRedirection)
+          expect(response['Location']).to eq(redirect_url)
+        end
+      end
+
+      context "but #follow_redirects? is false" do
+        subject { described_class.new(follow_redirects: false) }
+
+        it "must return the HTTP response for the URI" do
+          stub_request(:head,uri).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url
+            }
+          )
+
+          response = subject.head(uri)
+          expect(response).to be_kind_of(Net::HTTPRedirection)
+          expect(response['Location']).to eq(redirect_url)
+        end
+      end
+    end
+  end
+
   describe "#get" do
     it "must send a HTTP GET request for the given URI and return an Net::HTTPResponse object" do
       stub_request(:get,uri)
