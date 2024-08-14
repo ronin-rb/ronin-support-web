@@ -1079,8 +1079,15 @@ module Ronin
         #
         def request(method,url, follow_redirects: @follow_redirects,
                                 max_redirects:    @max_redirects,
+                                # request body keyword arguments
+                                body:      nil,
+                                form_data: nil,
+                                json:      nil,
                                 **kwargs)
-          response = http_request(method,url,**kwargs)
+          response = http_request(method,url, body:      body,
+                                              form_data: form_data,
+                                              json:      json,
+                                              **kwargs)
 
           if follow_redirects && response.kind_of?(Net::HTTPRedirection)
             redirect_count = 0

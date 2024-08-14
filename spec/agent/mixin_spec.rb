@@ -43,6 +43,72 @@ describe Ronin::Support::Web::Agent::Mixin do
         expect(WebMock).to have_requested(:get,redirect_url)
       end
 
+      context "and when the body: keyword argument is given" do
+        let(:body) { 'foo' }
+
+        it "must only send the request body with the first request" do
+          stub_request(:post,uri).with(body: body).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url
+            }
+          )
+          stub_request(:get,redirect_url).to_return(body: 'final response')
+
+          response = subject.request(:post,uri, body: body)
+          expect(response).to be_kind_of(Net::HTTPResponse)
+          expect(response.body).to eq('final response')
+
+          expect(WebMock).to have_requested(:post,uri)
+          expect(WebMock).to have_requested(:get,redirect_url)
+        end
+      end
+
+      context "and when the form_data: keyword argument is given" do
+        let(:form_data) { {'foo' => 'bar'} }
+
+        it "must only send the request form data with the first request" do
+          stub_request(:post,uri).with(body: form_data).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url
+            }
+          )
+          stub_request(:get,redirect_url).to_return(body: 'final response')
+
+          response = subject.request(:post,uri, form_data: form_data)
+          expect(response).to be_kind_of(Net::HTTPResponse)
+          expect(response.body).to eq('final response')
+
+          expect(WebMock).to have_requested(:post,uri)
+          expect(WebMock).to have_requested(:get,redirect_url)
+        end
+      end
+
+      context "and when the json: keyword argument is given" do
+        let(:json) { {'foo' => 42} }
+
+        it "must only send the request JSON data with the first request" do
+          stub_request(:post,uri).with(
+            body:    json,
+            headers: {'Content-Type' => 'application/json'}
+          ).to_return(
+            status: 301,
+            headers: {
+              'Location' => redirect_url
+            }
+          )
+          stub_request(:get,redirect_url).to_return(body: 'final response')
+
+          response = subject.request(:post,uri, json: json)
+          expect(response).to be_kind_of(Net::HTTPResponse)
+          expect(response.body).to eq('final response')
+
+          expect(WebMock).to have_requested(:post,uri)
+          expect(WebMock).to have_requested(:get,redirect_url)
+        end
+      end
+
       context "but requesting the HTTP redirect URL returns yet to another HTTP redirect" do
         let(:redirect_url1) { 'https://example.com/path2' }
         let(:redirect_url2) { 'https://example.com/path3' }
