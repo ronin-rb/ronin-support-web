@@ -14,7 +14,7 @@ describe Ronin::Support::Web::Agent::Mixin do
   let(:path) { '/path' }
   let(:uri)  { URI::HTTP.build(host: host, path: path) }
 
-  describe "#get" do
+  describe "#web_get" do
     it "must send a HTTP GET request for the given URI and return an Net::HTTPResponse object" do
       stub_request(:get,uri)
 
@@ -145,7 +145,7 @@ describe Ronin::Support::Web::Agent::Mixin do
     end
   end
 
-  describe "#get_html" do
+  describe "#web_get_html" do
     let(:html) do
       <<~HTML
         <html>
@@ -217,7 +217,7 @@ describe Ronin::Support::Web::Agent::Mixin do
     end
   end
 
-  describe "#get_xml" do
+  describe "#web_get_xml" do
     let(:xml) do
       <<~XML
         <?xml version="1.0"?>
@@ -272,7 +272,7 @@ describe Ronin::Support::Web::Agent::Mixin do
     end
   end
 
-  describe "#get_json" do
+  describe "#web_get_json" do
     let(:data) do
       {'foo' => 'bar'}
     end
@@ -314,7 +314,7 @@ describe Ronin::Support::Web::Agent::Mixin do
     end
   end
 
-  describe "#post" do
+  describe "#web_post" do
     it "must send a HTTP POST request for the given URI and return an Net::HTTPResponse object" do
       stub_request(:post,uri)
 
@@ -445,7 +445,7 @@ describe Ronin::Support::Web::Agent::Mixin do
     end
   end
 
-  describe "#post_html" do
+  describe "#web_post_html" do
     let(:html) do
       <<~HTML
         <html>
@@ -513,7 +513,7 @@ describe Ronin::Support::Web::Agent::Mixin do
     end
   end
 
-  describe "#post_xml" do
+  describe "#web_post_xml" do
     let(:xml) do
       <<~XML
         <?xml version="1.0"?>
@@ -568,7 +568,7 @@ describe Ronin::Support::Web::Agent::Mixin do
     end
   end
 
-  describe "#post_json" do
+  describe "#web_post_json" do
     let(:data) do
       {'foo' => 'bar'}
     end
