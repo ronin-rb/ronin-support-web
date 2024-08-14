@@ -1037,10 +1037,15 @@ module Ronin
         end
 
         #
-        # Gets a URL and returns the response.
+        # Performs an HTTP request for the URL and returns the response.
+        #
+        # @param [:copy, :delete, :get, :head, :lock, :mkcol, :move,
+        #         :options, :patch, :post, :propfind, :proppatch, :put,
+        #         :trace, :unlock] method
+        #   The HTTP method to use for the request.
         #
         # @param [URI::HTTP, Addressable::URI, String] url
-        #   The URL to create the HTTP GET request for.
+        #   The URL to create the HTTP request for.
         #
         # @param [Boolean] follow_redirects
         #   Overrides whether HTTP redirects will automatically be followed.
@@ -1065,13 +1070,17 @@ module Ronin
         # @note This method will follow redirects by default.
         #
         # @example
-        #   response = agent.get('https://example.com/')
+        #   response = agent.request(:post,'https://example.com/')
         #   # => #<Net::HTTPResponse:...>
         #
-        def get(url, follow_redirects: @follow_redirects,
-                     max_redirects:    @max_redirects,
-                     **kwargs)
-          response = http_get(url,**kwargs)
+        # @see #http_request
+        #
+        # @since 0.2.0
+        #
+        def request(method,url, follow_redirects: @follow_redirects,
+                                max_redirects:    @max_redirects,
+                                **kwargs)
+          response = http_request(method,url,**kwargs)
 
           if follow_redirects && response.kind_of?(Net::HTTPRedirection)
             redirect_count = 0
@@ -1082,7 +1091,7 @@ module Ronin
               end
 
               location = response['Location']
-              response = http_get(location)
+              response = http_get(location,**kwargs)
 
               redirect_count += 1
             end
@@ -1090,6 +1099,44 @@ module Ronin
 
           yield response if block_given?
           return response
+        end
+
+        #
+        # Gets a URL and returns the response.
+        #
+        # @param [URI::HTTP, Addressable::URI, String] url
+        #   The URL to create the HTTP GET request for.
+        #
+        # @option kwargs [Boolean] :follow_redirects
+        #   Overrides whether HTTP redirects will automatically be followed.
+        #
+        # @option kwargs [Integer] :max_redirects
+        #   Overrides the maximum number of redirects to follow.
+        #
+        # @!macro request_kwargs
+        #
+        # @yield [response]
+        #   If a block is given it will be passed the received HTTP response.
+        #
+        # @yieldparam [Net::HTTPResponse] response
+        #   The received HTTP response object.
+        #
+        # @return [Net::HTTPResponse]
+        #   The HTTP response object.
+        #
+        # @raise [TooManyRedirects]
+        #   Maximum number of redirects reached.
+        #
+        # @note This method will follow redirects by default.
+        #
+        # @example
+        #   response = agent.get('https://example.com/')
+        #   # => #<Net::HTTPResponse:...>
+        #
+        # @see #request
+        #
+        def get(url,**kwargs,&block)
+          request(:get,url,**kwargs,&block)
         end
 
         #
@@ -1216,10 +1263,10 @@ module Ronin
         # @param [URI::HTTP, Addressable::URI, String] url
         #   The URL to create the HTTP GET request for.
         #
-        # @param [Boolean] follow_redirects
+        # @option kwargs [Boolean] :follow_redirects
         #   Overrides whether HTTP redirects will automatically be followed.
         #
-        # @param [Integer] max_redirects
+        # @option kwargs [Integer] :max_redirects
         #   Overrides the maximum number of redirects to follow.
         #
         # @!macro request_kwargs
@@ -1244,24 +1291,10 @@ module Ronin
         #   response = agent.post('https://example.com/form', form_data: {'foo' => 'bar'})
         #   # => #<Net::HTTPResponse:...>
         #
-        def post(url, follow_redirects: @follow_redirects,
-                      max_redirects:    @max_redirects,
-                      **kwargs)
-          response = http_post(url,**kwargs)
-
-          if follow_redirects && response.kind_of?(Net::HTTPRedirection)
-            location = response['Location']
-
-            response = begin
-                         get(location, follow_redirects: follow_redirects,
-                                       max_redirects:    max_redirects - 1)
-                       rescue TooManyRedirects
-                         raise(TooManyRedirects,"maximum number of redirects reached: #{url.inspect}")
-                       end
-          end
-
-          yield response if block_given?
-          return response
+        # @see #request
+        #
+        def post(url,**kwargs,&block)
+          request(:post,url,**kwargs,&block)
         end
 
         #
