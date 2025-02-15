@@ -1,3 +1,8 @@
+### 0.1.1 / 2025-02-14
+
+* Use `require_relative` to improve load times.
+* Documentation improvements.
+
 ### 0.1.0.1 / 2024-07-22
 
 * Require [ronin-support] ~> 1.1.
